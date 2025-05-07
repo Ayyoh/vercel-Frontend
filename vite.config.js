@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://vercel-backend-ypr3.onrender.com'
+        target: "https://vercel-backend-ypr3.onrender.com"
       }
     }
   }
