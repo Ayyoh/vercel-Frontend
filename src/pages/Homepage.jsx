@@ -7,7 +7,7 @@ const Homepage = () => {
     const {products, setProducts} = useProductStore();
 
     useEffect(() => {
-        fetch('/api/products')
+        fetch('https://vercel-backend-psi-ashy.vercel.app/products')
         .then(res => res.json())
         .then(json => setProducts(json))
     }, [])
