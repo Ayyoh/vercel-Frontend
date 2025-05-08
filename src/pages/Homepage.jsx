@@ -7,7 +7,7 @@ const Homepage = () => {
     const {products, setProducts} = useProductStore();
 
     useEffect(() => {
-        fetch('https://vercel-backend-ypr3.onrender.com')
+        fetch('https://vercel-backend-ypr3.onrender.com/api/products')
         .then(res => res.json())
         .then(json => setProducts(json))
     }, [])
