@@ -9,19 +9,27 @@ export const useProductStore = create((set) => ({
         }
 
         const res = await fetch("/api/products", {
-            method: "POST",
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify(newProduct)
-        });
-        const data = await res.json();
-        set((state) => ({ products:[...state.products, data.data] }))
-        return { success: true, message: "Created a new product" }
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newProduct)
+});
+
+// Safely parse the response only if there's content
+const text = await res.text();
+const data = text ? JSON.parse(text) : null;
+
+if (res.ok && data?.data) {
+    set((state) => ({ products: [...state.products, data.data] }));
+    return { success: true, message: "Created a new product" };
+} else {
+    return { success: false, message: data?.error || "Something went wrong" };
+}
     },
 
     deleteProduct: async (_id) => {
-  const response = await fetch(`/api/products/${product._id}`, { method: "DELETE" });
+  const response = await fetch(`/api/products/${_id}`, { method: "DELETE" });
   const text = await response.text(); // Get the response as text
   if (text.length) { // Check if there is any text content
     await JSON.parse(text); // If so, parse it as JSON
