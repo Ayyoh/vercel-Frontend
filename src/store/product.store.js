@@ -21,14 +21,13 @@ export const useProductStore = create((set) => ({
     },
 
     deleteProduct: async (_id) => {
-        const res = await fetch(`/api/products/${_id}`, {
-            method: "DELETE",
-        })
-        const data = await res.json();
-        set((state) => ({
-            products: state.products.filter((product) => product._id !== _id)
-        }))
-    },
+  const response = await fetch(`/api/products/${product_.id}`, { method: "DELETE" });
+  const text = await response.text(); // Get the response as text
+  if (text.length) { // Check if there is any text content
+    await JSON.parse(text); // If so, parse it as JSON
+  }
+  i(f => ({ products: f.products.filter(d => d._id !== _id) }));
+},
     
     updateProduct: async (_id, updatedProduct) => {
         const res = await fetch(`/api/products/${_id}`, {
