@@ -28,13 +28,26 @@ if (res.ok && data?.data) {
 }
     },
 
-    deleteProduct: async (_id) => {
-  const response = await fetch(`/api/products/${_id}`, { method: "DELETE" });
-  const text = await response.text(); // Get the response as text
-  if (text.length) { // Check if there is any text content
-    await JSON.parse(text); // If so, parse it as JSON
+    deleteProduct: async (id) => {
+  try {
+    const res = await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+
+    const text = await res.text();
+    const data = text ? JSON.parse(text) : null;
+
+    if (res.ok) {
+      set((state) => ({
+        products: state.products.filter((product) => product._id !== id),
+      }));
+      return { success: true, message: "Deleted product successfully" };
+    } else {
+      return { success: false, message: data?.error || "Error deleting product" };
+    }
+  } catch (error) {
+    return { success: false, message: "Network error" };
   }
-  i(f => ({ products: f.products.filter(d => d._id !== _id) }));
 },
     
     updateProduct: async (_id, updatedProduct) => {
